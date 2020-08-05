@@ -2,6 +2,8 @@ const express = require("express");
 let router = express.Router();
 var mongoose = require("mongoose");
 var productvalidate = require("../../middleware/productvalidation");
+var auth = require("../../middleware/auth");
+var admin = require("../../middleware/admin");
 var { ProductModel } = require("../../models/product");
 //Now with this validate, we will apply it on all the requests
 
@@ -14,8 +16,8 @@ var { ProductModel } = require("../../models/product");
 //And it wil fetch data from this file only.
 
 //This route will get all products
-router.get("/", async (req, res) => {
-  console.log(req.query);
+router.get("/", auth, admin, async (req, res) => {
+  console.log(req.auser);
   //Lets show some data elements per page.
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
